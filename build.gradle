@@ -1,0 +1,49 @@
+group 'faculty'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'war'
+apply plugin: 'application'
+
+tasks.withType(JavaCompile) {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+    mainClassName='com.web.Application'
+}
+
+
+
+repositories {
+    mavenCentral()
+    jcenter()
+    maven { url "http://repo.spring.io/libs-release" }
+}
+
+dependencies {
+    compile 'org.springframework.boot:spring-boot-starter-web:latest.release'
+    compile 'org.springframework.boot:spring-boot-starter-tomcat:latest.release'
+    compile 'org.springframework.boot:spring-boot-starter-security:latest.release'
+    compile 'org.springframework.boot:spring-boot-starter-actuator:latest.release'
+    compile 'org.springframework.boot:spring-boot-starter-aop:latest.release'
+    compile 'org.springframework.boot:spring-boot-starter-thymeleaf:latest.release'
+    compile 'org.springframework:spring-core:latest.release'
+    compile 'org.springframework:spring-jdbc:latest.release'
+    compile 'org.springframework:spring-web:latest.release'
+    compile 'mysql:mysql-connector-java:6.0.2'
+    compile 'c3p0:c3p0:latest.release'
+    compile "org.zeromq:jeromq:0.3.5"
+    compile "org.springframework.boot:spring-boot-starter-websocket:latest.release"
+    compile "org.springframework:spring-messaging:4.2.6.RELEASE"
+
+    compile 'org.webjars:jquery:2.2.3'
+    compile "org.webjars:stomp-websocket:2.3.3"
+    compile "org.webjars:sockjs-client:1.0.2"
+    compile "org.webjars:angularjs:1.5.5"
+    compile "org.webjars:angular-ui-router:0.2.18"
+
+    testCompile 'com.h2database:h2:latest.release'
+    testCompile 'junit:junit:latest.release'
+    testCompile 'org.apache.httpcomponents:httpclient:4.5.2'
+    testCompile 'org.springframework.boot:spring-boot-starter-test:latest.release'
+}
