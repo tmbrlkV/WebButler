@@ -11,6 +11,7 @@
             document.getElementById('connect').disabled = connected;
             document.getElementById('disconnect').disabled = !connected;
             document.getElementById('conversationDiv').style.visibility = connected ? 'visible' : 'hidden';
+            document.getElementById('responseDiv').style.visibility = connected ? 'visible' : 'hidden';
             document.getElementById('response').innerHTML = '';
         }
 
@@ -40,35 +41,44 @@
         function sendName() {
             var user = [[${#httpServletRequest.remoteUser}]];
             var message = document.getElementById('name').value;
+            if (message === "" || message == null) {
+                return;
+            }
             stompClient.send("/app/hello", {}, JSON.stringify({'user': user, 'message': message}));
         }
 
         function showGreeting(message) {
+            if (message == null || message === "") return;
             var response = document.getElementById('response');
-            var p = document.createElement('p');
-            p.style.wordWrap = 'break-word';
-            p.appendChild(document.createTextNode(message));
-            response.appendChild(p);
+            response.value += message + "\n";
+            document.getElementById('name').value = "";
+            response.scrollTop = response.scrollHeight;
         }
     </script>
+    <style>
+        #response {
+            color: black;
+            font-size: 12pt;
+        }
+    </style>
 </head>
 <body onload="disconnect()">
-<noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
-    enabled. Please enable
-    Javascript and reload this page!</h2></noscript>
 <div>
     <div>
         <button id="connect" onclick="connect();">Connect</button>
         <button id="disconnect" disabled="disabled" onclick="disconnect();">Disconnect</button>
     </div>
-    <h3 th:inline="text">Hello, [[${#httpServletRequest.remoteUser}]]!</h3>
     <form th:action="@{/logout}" method="post">
-        <input type="submit" value="Sign Out"/>
+        <h3 th:inline="text">Hello, [[${#httpServletRequest.remoteUser}]]!</h3>
+        <input type="submit" value="Sign Out" onclick="disconnect()"/>
     </form>
+    <div id="responseDiv">
+        <label for="response"></label><textarea id="response" rows="10" cols="50" readonly="readonly"
+                                                disabled="disabled"></textarea>
+    </div>
     <div id="conversationDiv">
-        <label for="name">What is your name?</label><input type="text" id="name"/>
+        <label for="name"></label><input type="text" id="name" maxlength="140"/>
         <button id="sendName" onclick="sendName();">Send</button>
-        <p id="response"></p>
     </div>
 </div>
 </body>

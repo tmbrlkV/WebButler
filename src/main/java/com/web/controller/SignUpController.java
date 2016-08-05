@@ -42,7 +42,7 @@ public class SignUpController {
         }
     }
 
-    private User signUp(@RequestParam String username, @RequestParam String password) throws JsonProcessingException {
+    private User signUp(String username, String password) throws JsonProcessingException {
         SocketConfig instance = SocketConfig.getInstance();
 
         User user = new User(username, passwordEncoder.encodePassword(password, null));
