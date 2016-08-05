@@ -1,13 +1,14 @@
 package com.web.entity;
 
 public class Message {
-    private String name;
+    private String message;
+    private String user;
 
-    public String getName() {
-        return name;
+    public String getMessage() {
+        return message;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getUser() {
+        return user;
     }
 }

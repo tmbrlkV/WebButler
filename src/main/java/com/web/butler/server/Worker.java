@@ -33,7 +33,6 @@ public class Worker implements Runnable {
                 dataEvent = queue.remove(0);
             }
             String data = commandManager.execute(dataEvent);
-            System.out.println(data);
             dataEvent.getServer().send(dataEvent.getSocket(), data.getBytes());
         }
     }

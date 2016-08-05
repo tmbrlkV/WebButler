@@ -33,7 +33,6 @@ public class CommandManager {
         put(Command.NEW_USER, databaseCommand);
         put(Command.MESSAGE, request -> {
             sender.send(request);
-            System.out.println(request);
             return DEFAULT_REPLY;
         });
     }};

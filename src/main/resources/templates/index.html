@@ -4,7 +4,7 @@
     <title>Hello WebSocket</title>
     <script src="webjars/sockjs-client/1.0.2/sockjs.js"></script>
     <script src="webjars/stomp-websocket/2.3.3/stomp.js"></script>
-    <script type="text/javascript">
+    <script type="text/javascript" th:inline="javascript">
         var stompClient = null;
 
         function setConnected(connected) {
@@ -17,10 +17,13 @@
         function connect() {
             var socket = new SockJS('/hello');
             stompClient = Stomp.over(socket);
-            stompClient.connect({}, function(frame) {
+            stompClient.connect({}, function (frame) {
                 setConnected(true);
                 console.log('Connected: ' + frame);
-                stompClient.subscribe('/topic/greetings', function(greeting){
+                stompClient.subscribe('/topic/greetings', function (greeting) {
+                    showGreeting(JSON.parse(greeting.body).content);
+                });
+                stompClient.subscribe('http://10.66.160.89:14000', function (greeting) {
                     showGreeting(JSON.parse(greeting.body).content);
                 });
             });
@@ -35,8 +38,9 @@
         }
 
         function sendName() {
-            var name = document.getElementById('name').value;
-            stompClient.send("/app/hello", {}, JSON.stringify({ 'name': name }));
+            var user = [[${#httpServletRequest.remoteUser}]];
+            var message = document.getElementById('name').value;
+            stompClient.send("/app/hello", {}, JSON.stringify({'user': user, 'message': message}));
         }
 
         function showGreeting(message) {
@@ -49,18 +53,20 @@
     </script>
 </head>
 <body onload="disconnect()">
-<noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being enabled. Please enable
+<noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
+    enabled. Please enable
     Javascript and reload this page!</h2></noscript>
 <div>
     <div>
         <button id="connect" onclick="connect();">Connect</button>
         <button id="disconnect" disabled="disabled" onclick="disconnect();">Disconnect</button>
     </div>
+    <h3 th:inline="text">Hello, [[${#httpServletRequest.remoteUser}]]!</h3>
     <form th:action="@{/logout}" method="post">
         <input type="submit" value="Sign Out"/>
     </form>
     <div id="conversationDiv">
-        <label for="name">What is your name?</label><input type="text" id="name" />
+        <label for="name">What is your name?</label><input type="text" id="name"/>
         <button id="sendName" onclick="sendName();">Send</button>
         <p id="response"></p>
     </div>
