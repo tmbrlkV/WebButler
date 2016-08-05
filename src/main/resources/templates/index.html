@@ -4,6 +4,7 @@
     <title>Hello WebSocket</title>
     <script src="webjars/sockjs-client/1.0.2/sockjs.js"></script>
     <script src="webjars/stomp-websocket/2.3.3/stomp.js"></script>
+    <script src="webjars/jquery/2.2.3/jquery.js"></script>
     <script type="text/javascript" th:inline="javascript">
         var stompClient = null;
 
@@ -30,6 +31,15 @@
             });
         }
 
+        function init() {
+            $("#name").keyup(function (event) {
+                if (event.keyCode == 13) {
+                    $("#sendName").click();
+                }
+            });
+
+        }
+
         function disconnect() {
             if (stompClient != null) {
                 stompClient.disconnect();
@@ -54,6 +64,10 @@
             document.getElementById('name').value = "";
             response.scrollTop = response.scrollHeight;
         }
+
+        function clearScreen() {
+            document.getElementById('response').value = "";
+        }
     </script>
     <style>
         #response {
@@ -62,7 +76,7 @@
         }
     </style>
 </head>
-<body onload="disconnect()">
+<body onload="disconnect(); init()">
 <div>
     <div>
         <button id="connect" onclick="connect();">Connect</button>
@@ -72,6 +86,7 @@
         <h3 th:inline="text">Hello, [[${#httpServletRequest.remoteUser}]]!</h3>
         <input type="submit" value="Sign Out" onclick="disconnect()"/>
     </form>
+    <button onclick="clearScreen();">Clear</button>
     <div id="responseDiv">
         <label for="response"></label><textarea id="response" rows="10" cols="50" readonly="readonly"
                                                 disabled="disabled"></textarea>
