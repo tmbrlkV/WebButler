@@ -53,7 +53,7 @@ public class SocketConfig {
         printWriter.flush();
     }
 
-    String receive() {
+    public String receive() {
         try {
             InputStream inputStream = socket.getInputStream();
             byte[] message = new byte[8000];
