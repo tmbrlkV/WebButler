@@ -9,9 +9,8 @@ apply plugin: 'application'
 tasks.withType(JavaCompile) {
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
-    mainClassName='com.web.Application'
+    mainClassName = 'com.web.Application'
 }
-
 
 
 repositories {
@@ -41,6 +40,9 @@ dependencies {
     compile "org.webjars:sockjs-client:1.0.2"
     compile "org.webjars:angularjs:1.5.5"
     compile "org.webjars:angular-ui-router:0.2.18"
+
+    compile 'org.slf4j:jcl-over-slf4j:1.7.21'
+    compile 'ch.qos.logback:logback-classic:1.1.7'
 
     testCompile 'com.h2database:h2:latest.release'
     testCompile 'junit:junit:latest.release'
